@@ -18,6 +18,13 @@
       $this->loginForm();
     }
 
+    public function login() {
+      $mail = $_POST['loginMail'];
+      $password = $_POST['loginPassword'];
+
+      $this->User->userLogin($mail, $password, '/dashboard/');
+    }
+
     public function loginForm() {
       if ($this->User->checkIfUserHasAcces('admin')) {
         // Redirect to the dashboard
@@ -26,7 +33,7 @@
       else {
         // View for the login
         include 'view/header.php';
-          include 'view/loginForm.html';
+          include 'view/loginForm.php';
         include 'view/footer.php';
       }
     }
