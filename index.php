@@ -6,7 +6,7 @@
 
   $Router->installedPath = $GLOBALS['config']['base_url'];
 
-  $Router->standardController = 'display';
+  $Router->standardController = 'user';
   $Router->customURLs = array(
     "login" => "/user/login/",
     "logout" => "/user/logout/"
