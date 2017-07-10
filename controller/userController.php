@@ -19,10 +19,18 @@
     }
 
     public function login() {
-      $mail = $_POST['loginMail'];
-      $password = $_POST['loginPassword'];
+      if (ISSET($_POST['loginMail']) && ISSET($_POST['loginPassword'])) {
+        // When there is a login request the come here
+        $mail = $_POST['loginMail'];
+        $password = $_POST['loginPassword'];
 
-      $this->User->userLogin($mail, $password, '/dashboard/');
+        $this->User->userLogin($mail, $password, '/dashboard/');
+      }
+      else {
+        // When a user comes here by /user/login it comes here and goes to the login form
+        $this->loginForm();
+      }
+
     }
 
     public function loginForm() {
