@@ -8,7 +8,7 @@
 
   $Router->standardController = 'user';
   $Router->customURLs = array(
-    "login" => "/user/login/",
+    "login" => "/user/loginForm/",
     "logout" => "/user/logout/"
   );
   $Router->customUrl();
