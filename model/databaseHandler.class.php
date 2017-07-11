@@ -22,11 +22,11 @@ require_once 'config.php';
 
     function __construct() {
       // Starts when the class is called
-      $this->serverIP = $GLOBALS['config']['base_url']['db-ip'];
-      $this->port = $GLOBALS['config']['base_url']['db-port'];
-      $this->databaseName = $GLOBALS['config']['base_url']['db-name'];
-      $this->username = $GLOBALS['config']['base_url']['db-user'];
-      $this->password = $GLOBALS['config']['base_url']['db-password'];
+      $this->serverIP = $GLOBALS['config']['db-ip'];
+      $this->port = $GLOBALS['config']['db-port'];
+      $this->databaseName = $GLOBALS['config']['db-name'];
+      $this->username = $GLOBALS['config']['db-user'];
+      $this->password = $GLOBALS['config']['db-password'];
 
       try {
         $conn = new PDO("mysql:host=$this->serverIP;port=$this->port;dbname=$this->databaseName", $this->username, $this->password);
