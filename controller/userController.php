@@ -20,6 +20,9 @@
       $this->loginForm();
     }
 
+    /**
+     *  Log a user in
+     */
     public function login() {
       if (ISSET($_POST['loginMail']) && ISSET($_POST['loginPassword'])) {
         // When there is a login request the come here
@@ -46,7 +49,6 @@
     /**
      * Shows to login form when someone comes here
      * But is someone is logged in we will redirect it to the dashboard
-     * @return [type] [description]
      */
     public function loginForm() {
       $this->User->setPageAcces(['admin']);
@@ -71,7 +73,12 @@
       include 'view/footer.php';
     }
 
-
+    /**
+     * Register a new user
+     * If it succesfully created it will create a view for the succesvol login
+     * Else it will show a fail view
+     * @return [type] [description]
+     */
     public function register() {
       // Check if there is a register with everything filled in
       if (ISSET($_POST['registerMail']) && ISSET($_POST['registerPassword']) && ISSET($_POST['registerPasswordConfirm']) && $_POST['registerUser']) {
