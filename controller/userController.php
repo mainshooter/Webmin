@@ -33,8 +33,14 @@
 
     }
 
+    /**
+     * Shows to login form when someone comes here
+     * But is someone is logged in we will redirect it to the dashboard
+     * @return [type] [description]
+     */
     public function loginForm() {
-      if ($this->User->checkIfUserHasAcces('admin')) {
+      $this->User->setPageAcces(['admin']);
+      if ($this->User->checkIfUserHasAcces()) {
         // Redirect to the dashboard
         echo "We are logged in";
       }
@@ -43,6 +49,35 @@
         include 'view/header.php';
           include 'view/loginForm.php';
         include 'view/footer.php';
+      }
+    }
+
+    /**
+     * Shows the register form to register a user
+     */
+    public function registerForm() {
+      include 'view/header.php';
+        include 'view/registerUser.php';
+      include 'view/footer.php';
+    }
+
+
+    public function register() {
+      // Check if there is a register with everything filled in
+      if (ISSET($_POST['registerMail']) && ISSET($_POST['registerPassword']) && ISSET($_POST['registerPasswordConfirm']) && $_POST['registerUser']) {
+
+        if ($_POST['registerPassword'] === $_POST['registerPasswordConfirm']) {
+          // Same password
+          $mail = $_POST['registerMail'];
+          $password = $_POST['registerPassword'];
+          $this->User->registerNewUser($mail, $password, 'admin');
+        }
+      }
+
+      else {
+          // No user register
+          // A user came here by excident
+          $this->registerForm();
       }
     }
 
