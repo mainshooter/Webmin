@@ -37,15 +37,15 @@
     public function customUrl() {
       $url = str_replace($this->installedPath, '', $this->url);
       // To get our current URL
+      $url = str_replace($GLOBALS['config']['base_url'], '', $this->url);
+      $url = str_replace('/', '', $url);
 
-      $url = str_replace('/', '', $this->url);
       // To remove any / after the word
       if (!empty($this->customURLs)) {
         // If we have any customer urls
         foreach ($this->customURLs as $key => $value) {
           if ($key == $url) {
             $this->url = $value;
-            break;
           }
         }
       }
@@ -113,9 +113,8 @@
     public function getMethod() {
       if (!empty($this->path[1])) {
         // To check if we have a method comeing in
-        $method = $this->path[1];
+        $method = $this->path[2];
         $controller = $this->controller . 'Controller';
-
         require_once 'controller/' . $this->controller . 'Controller.php';
         // For method exists to work we need the controller
         if (method_exists(new $controller, $method)) {
