@@ -9,6 +9,10 @@
     private $serverUsername;
     private $serverPassword;
 
+    /**
+     * Gets all servers from the DB by a userID
+     * @return [boolean or arr] [Resturns a boolean if we don't have a server or a assoc array when we have servers]
+     */
     public function getServers() {
       $Db = new Db();
       $User = new User();
