@@ -1,5 +1,6 @@
 <?php
   require_once 'model/User.class.php';
+  require_once 'model/Security.class.php';
 
 
   class userController {
@@ -8,6 +9,7 @@
 
     function __construct() {
       $this->User = new User();
+      $this->S = new Security();
     }
 
     /**
@@ -70,11 +72,22 @@
           // Same password
           $mail = $_POST['registerMail'];
           $password = $_POST['registerPassword'];
-          $this->User->registerNewUser($mail, $password, 'admin');
-          include 'view/header.php';
-            include 'view/accountIsRegisterd.php';
-            include 'view/loginForm.php';
-          include 'view/footer.php';
+          $registerResult = $this->User->registerNewUser($mail, $password, 'admin');
+          if ($registerResult) {
+            // If the register is succesed
+            include 'view/header.php';
+              include 'view/accountIsRegisterd.php';
+              include 'view/loginForm.php';
+            include 'view/footer.php';
+          }
+          else {
+            // If it is faild
+            include 'view/header.php';
+            echo "<h2>Deze gebruiker bestaat al</h2>";
+              include 'view/registerUser.php';
+            include 'view/footer.php';
+          }
+
         }
       }
 
