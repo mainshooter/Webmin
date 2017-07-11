@@ -24,7 +24,7 @@
         $mail = $_POST['loginMail'];
         $password = $_POST['loginPassword'];
 
-        $this->User->userLogin($mail, $password, '/dashboard/');
+        $this->User->userLogin($mail, $password, $GLOBALS['config']['base_url'] . 'dashboard/');
       }
       else {
         // When a user comes here by /user/login it comes here and goes to the login form
@@ -71,6 +71,10 @@
           $mail = $_POST['registerMail'];
           $password = $_POST['registerPassword'];
           $this->User->registerNewUser($mail, $password, 'admin');
+          include 'view/header.php';
+            include 'view/accountIsRegisterd.php';
+            include 'view/loginForm.php';
+          include 'view/footer.php';
         }
       }
 
