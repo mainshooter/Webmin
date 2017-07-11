@@ -18,6 +18,9 @@
       $this->getServers();
     }
 
+    /**
+     * Gets all servers from the serverManager
+     */
     public function getServers() {
       $this->User->setPageAcces(['admin']);
       if ($this->User->checkIfUserHasAcces()) {
@@ -31,7 +34,7 @@
 
         else {
           // When we don't have any servers
-          include 'view/dashbord/no-servers.html';
+          include 'view/dashboard/no-servers.html';
         }
 
         include 'view/footer.php';
