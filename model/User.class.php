@@ -58,17 +58,18 @@ require_once 'Security.class.php';
     * @param  [string] $newPassword [The password that the user wants]
     * @return [boolean]              [If we succesed or not with registering a new user]
     */
-   public function registerNewUser($newEmail, $newPassword) {
+   public function registerNewUser($newEmail, $newPassword, $group) {
      $db = new db();
      $s = new Security();
 
      $password = $this->generateHashPassword($s->checkInput($newPassword));
 
      if (!$this->checkIfEmailExists($newEmail)) {
-       $sql = "INSERT INTO `user`(`mail`, `password`) VALUES (:mail, :password)";
+       $sql = "INSERT INTO `user`(`mail`, `password`, `group`) VALUES (:mail, :password, :group)";
        $input = array(
          "mail" => $s->checkInput($newEmail),
-         "password" => $s->checkInput($password)
+         "password" => $s->checkInput($password),
+         "group" => $s->checkInput($group)
        );
 
        $db->createData($sql, $input);
@@ -227,6 +228,7 @@ require_once 'Security.class.php';
 
      foreach ($result as $key) {
        return($key['password']);
+       break;
      }
    }
 
