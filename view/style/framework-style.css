@@ -200,6 +200,11 @@ ol li {
   font-weight: lighter;
   font-size: 1.7em;
 }
+.center {
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+}
 
 @media only screen and (min-width: 768px) {
     /* For desktop: */
