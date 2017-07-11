@@ -54,7 +54,7 @@
       $this->User->setPageAcces(['admin']);
       if ($this->User->checkIfUserHasAcces()) {
         // Redirect to the dashboard
-        echo "We are logged in";
+        header("Refresh:0; " . $GLOBALS['config']['base_url'] . 'dashboard/');
       }
       else {
         // View for the login
