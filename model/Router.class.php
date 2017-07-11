@@ -113,7 +113,7 @@
     public function getMethod() {
       if (!empty($this->path[1])) {
         // To check if we have a method comeing in
-        $method = $this->path[2];
+        $method = $this->path[1];
         $controller = $this->controller . 'Controller';
         require_once 'controller/' . $this->controller . 'Controller.php';
         // For method exists to work we need the controller
