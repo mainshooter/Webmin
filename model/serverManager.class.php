@@ -35,6 +35,43 @@
       }
     }
 
+    /**
+     * Gets the server credentials and puts them in the class properties
+     */
+    public function getServerCredentials($serverID) {
+      $Db = new db();
+      $S = new Security();
+
+      $sql = "SELECT * FROM server WHERE idserver=:serverID";
+      $input = array(
+        "serverID" => $s->checkInput($serverID)
+      );
+
+      $result = $Db->readData($sql, $input);
+      foreach ($result as $key) {
+        $this->serverIP = $key['serverIP'];
+        $this->serverPort = $key['serverPort'];
+        $this->serverUsername = $key['serverUsername'];
+        $this->serverPassword = $key['serverPassword'];
+        break;
+      }
+    }
+
+    /**
+     * Gets the online or offline server status
+     * @return [string] [With the status the server]
+     */
+    public function getServerStatus() {
+      $pingResult = exec("ping $this->serverIP", '', $status);
+      // Ping result contains the text from the exec
+      // status contains if the ping as been succeded
+        if (0 == $status) {
+            $status = "online";
+        } else {
+            $status = "offline";
+        }
+    }
+
   }
 
 
