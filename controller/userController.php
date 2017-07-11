@@ -26,7 +26,15 @@
         $mail = $_POST['loginMail'];
         $password = $_POST['loginPassword'];
 
-        $this->User->userLogin($mail, $password, $GLOBALS['config']['base_url'] . 'dashboard/');
+        $loginResult = $this->User->userLogin($mail, $password, $GLOBALS['config']['base_url'] . 'dashboard/');
+
+        if (!$loginResult) {
+          // When the login fails
+          include 'view/header.php';
+          echo "<h2 class='col-6'>Combinatie klopt niet!</h2>";
+            include 'view/loginForm.php';
+          include 'view/footer.php';
+        }
       }
       else {
         // When a user comes here by /user/login it comes here and goes to the login form
@@ -83,7 +91,7 @@
           else {
             // If it is faild
             include 'view/header.php';
-            echo "<h2>Deze gebruiker bestaat al</h2>";
+            echo "<h2 class='col-6'>Deze gebruiker bestaat al</h2>";
               include 'view/registerUser.php';
             include 'view/footer.php';
           }
