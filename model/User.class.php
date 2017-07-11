@@ -41,6 +41,27 @@ require_once 'Security.class.php';
    }
 
    /**
+    * Gets the userID from a user by mail
+    * @param  [string] $userMail [The mail adress of a user]
+    * @return [int]           [The userID of the user]
+    */
+   public function getUserID($userMail) {
+     $Db = new db();
+     $S = new Security();
+
+       $sql = "SELECT iduser FROM WHERE mail=:Mail LIMIT 1";
+       $input = array(
+         "Mail" => $S->checkInput($userMail)
+       );
+       $result = $Db->readData($sql, $input);
+
+       foreach ($result as $key) {
+         return($key['iduser']);
+         break;
+       }
+   }
+
+   /**
     * Logs a user out
     */
    public function userLogout($redirectLocation) {
