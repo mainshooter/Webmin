@@ -49,12 +49,11 @@ require_once 'Security.class.php';
      $Db = new db();
      $S = new Security();
 
-       $sql = "SELECT iduser FROM WHERE mail=:Mail LIMIT 1";
+       $sql = "SELECT iduser FROM user WHERE `mail`=:mail LIMIT 1";
        $input = array(
-         "Mail" => $S->checkInput($userMail)
+         "mail" => $S->checkInput($userMail)
        );
        $result = $Db->readData($sql, $input);
-
        foreach ($result as $key) {
          return($key['iduser']);
          break;

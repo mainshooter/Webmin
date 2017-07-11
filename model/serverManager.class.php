@@ -1,5 +1,5 @@
 <?php
-  require_once 'model/databaseHander.class.php';
+  require_once 'model/databaseHandler.class.php';
   require_once 'model/User.class.php';
 
   class ServerManager {
