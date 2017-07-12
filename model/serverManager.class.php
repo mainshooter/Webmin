@@ -59,10 +59,11 @@
 
     /**
      * Gets the online or offline server status
+     * @param [string] $serverIP [The IP adress of the server]
      * @return [string] [With the status the server]
      */
-    public function getServerStatus() {
-      $pingResult = exec("ping $this->serverIP", '', $status);
+    public function getServerStatus($serverIP) {
+      $serverPing = exec("ping -n 1 $serverIP", $output, $status);
       // Ping result contains the text from the exec
       // status contains if the ping as been succeded
         if (0 == $status) {
@@ -70,6 +71,8 @@
         } else {
             $status = "offline";
         }
+
+        return($status);
     }
 
   }
