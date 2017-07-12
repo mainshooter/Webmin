@@ -1,6 +1,7 @@
 <?php
   require_once 'model/databaseHandler.class.php';
   require_once 'model/User.class.php';
+  require_once 'model/Security.class.php';
 
   class ServerManager {
 
@@ -33,6 +34,31 @@
         // We dont have a server
         return(false);
       }
+    }
+
+    /**
+     * Adds a new server to the database
+     * @param [arr] $newServer [A assoc array with the values from the vorm]
+     * @param [string] $userMail  [The mail adress from the user]
+     */
+    public function addServer($newServer, $userMail) {
+      $Db = new db();
+      $S = new Security();
+      $User = new User();
+
+      $userID = $User->getUserID($S->checkInput($userMail));
+
+      $sql = "INSERT INTO server (`serverName`, `serverIP`, `serverPort`, `serverUsername`, `serverPassword`, `userID`) VALUES (:serverName, :serverIP, :serverPort, :serverUsername, :serverPassword, :userID)";
+      $input = array(
+        "serverName" => $S->checkInput($newServer['serverName']),
+        "serverIP" => $S->checkInput($newServer['serverIP']),
+        "serverPort" => $S->checkInput($newServer['serverPort']),
+        "serverUsername" => $S->checkInput($newServer['serverUsername']),
+        "serverPassword" => $S->checkInput($newServer['serverPassword']),
+        "userID" => $S->checkInput($userID)
+      );
+
+      $Db->CreateData($sql, $input);
     }
 
     /**

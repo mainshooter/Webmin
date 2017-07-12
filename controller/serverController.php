@@ -2,12 +2,14 @@
   require_once 'model/serverManager.class.php';
   require_once 'model/databaseHandler.class.php';
   require_once 'model/Security.class.php';
+  require_once 'model/User.class.php';
 
 
   class serverController {
     private $ServerManager;
     private $Db;
     private $S;
+    private $User;
 
 
     /**
@@ -17,6 +19,7 @@
       $this->ServerManager = new ServerManager();
       $this->Db = new db();
       $this->S = new Security();
+      $this->User = new User();
     }
 
     public function index() {
@@ -24,13 +27,45 @@
     }
 
     public function addServer() {
+      $this->User->setPageAcces(['admin']);
+      if ($this->User->checkIfUserHasAcces()) {
+        if (ISSET($_POST['serverToevoegen']) && ISSET($_POST['serverName']) && ISSET($_POST['serverIP']) && ISSET($_POST['serverPort']) && ISSET($_POST['serverUsername']) && ISSET($_POST['serverPassword'])) {
+          $this->ServerManager->addServer($_POST, $_SESSION['userMail']);
+          header('Refresh:0; ' . $GLOBALS['config']['base_url'] . 'dashboard/');
+        }
+
+        else {
+          // When there is missing a post value
+          include 'view/header.php';
+            include 'view/server/addServerForm.php';
+          include 'view/footer.php';
+        }
+
+      }
+
+      else {
+        // No acces a user isn't logged in
+        header('Refresh:0; ' . $GLOBALS['config']['base_url'] . '');
+      }
 
     }
 
+    /**
+     * Create the view to add a server
+     */
     public function addServerForm() {
-      include 'view/header.php';
-        include 'view/server/addServerForm.php';
-      include 'view/footer.php';
+      $this->User->setPageAcces(['admin']);
+      if ($this->User->checkIfUserHasAcces()) {
+        include 'view/header.php';
+          include 'view/server/addServerForm.php';
+        include 'view/footer.php';
+      }
+
+      else {
+        // Not logged in
+        header('Refresh:0; ' . $GLOBALS['config']['base_url'] . '');
+      }
+
     }
 
   }
