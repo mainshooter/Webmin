@@ -22,10 +22,18 @@
       $this->User = new User();
     }
 
+    /**
+     * No one can't be here because we don't have a dashboard for the user here
+     * That is done by the dashboard ctrl so we send a client to there
+     * @return [type] [description]
+     */
     public function index() {
       header('Refresh:0; ' . $GLOBALS['config']['base_url'] . 'dashboard/');
     }
 
+    /**
+     * The controller method to add a new server to the DB
+     */
     public function addServer() {
       $this->User->setPageAcces(['admin']);
       if ($this->User->checkIfUserHasAcces()) {
