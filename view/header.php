@@ -41,6 +41,7 @@
     <div class="col-3 col-m-12 menu">
       <ul>
         <li><a href="<?php echo $GLOBALS['config']['base_url'] ?>">Home</a></li>
+        <li><a href="<?php echo $GLOBALS['config']['base_url'] ?>logout/">Logout</a></li>
         <li><a href="<?php echo $GLOBALS['config']['base_url'] ?>dashboard/">Dashboard</a></li>
         <li><a href="<?php echo $GLOBALS['config']['base_url'] ?>serverToevoegen/">Server toevoegen</a></li>
         <li><a href="<?php echo $GLOBALS['config']['base_url'] ?>">The Food</a></li>
