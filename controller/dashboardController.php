@@ -25,9 +25,14 @@
       $this->User->setPageAcces(['admin']);
       if ($this->User->checkIfUserHasAcces()) {
         $servers = $this->ServerManager->getServers();
+
         include 'view/header.php';
         if ($servers != false) {
           // If we have a server
+          $serverStatus;
+          foreach ($servers as $key) {
+            $serverStatus[] = $this->ServerManager->getServerStatus($key['serverIP']);
+          }
             include 'view/dashboard/serversList.php';
 
         }
