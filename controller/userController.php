@@ -47,6 +47,13 @@
     }
 
     /**
+     * Logs a user out
+     */
+    public function logout() {
+      $this->User->userLogout($GLOBALS['config']['base_url']);
+    }
+
+    /**
      * Shows to login form when someone comes here
      * But is someone is logged in we will redirect it to the dashboard
      */
