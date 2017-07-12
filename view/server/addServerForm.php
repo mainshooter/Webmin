@@ -5,6 +5,9 @@
   <label>ServerIP</label>
   <input type="text" name="serverIP"/>
 
+  <label>Server Port</label>
+  <input type="number" name="serverPort">
+
   <label>Server username</label>
   <input type="text" name="serverUsername">
 
