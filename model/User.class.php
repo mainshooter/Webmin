@@ -62,6 +62,7 @@ require_once 'Security.class.php';
 
    /**
     * Logs a user out
+    * @param [string] $redirectLocation [Were a client needs to go to after the logout]
     */
    public function userLogout($redirectLocation) {
      unset($_SESSION['loginToken']);
