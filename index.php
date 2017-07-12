@@ -11,7 +11,8 @@ session_start();
   $Router->customURLs = array(
     "login" => "user/loginForm/",
     "logout" => "user/logout/",
-    "register" => "user/registerForm/"
+    "register" => "user/registerForm/",
+    "serverToevoegen" => "server/addServerForm/"
   );
   $Router->customUrl();
   $Router->parseUrl();
