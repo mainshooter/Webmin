@@ -140,6 +140,7 @@
         $parameters = $this->path;
         unset($parameters[0]);
         unset($parameters[1]);
+        $parameters = array_values($parameters);
         // To remove the method and the controller
         $this->parameters = $parameters;
       }
