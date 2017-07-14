@@ -28,7 +28,7 @@
      * @return [type] [description]
      */
     public function index() {
-      include 'view/not-loggedin.html';
+      include 'view/not-loggedin.php';
     }
 
     /**
@@ -86,7 +86,7 @@
 
       else {
         // No acces a user isn't logged in
-        include 'view/not-loggedin.html';
+        include 'view/not-loggedin.php';
       }
 
     }
@@ -104,7 +104,7 @@
 
       else {
         // Not logged in
-        include 'view/not-loggedin.html';
+        include 'view/not-loggedin.php';
       }
 
     }
