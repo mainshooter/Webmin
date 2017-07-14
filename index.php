@@ -12,8 +12,7 @@ session_start();
     "login" => "user/loginForm/",
     "logout" => "user/logout/",
     "register" => "user/registerForm/",
-    "serverToevoegen" => "server/addServerForm/",
-    "details" => "server/serverDetails/"
+    "serverToevoegen" => "server/addServerForm/"
   );
   $Router->customUrl();
   $Router->parseUrl();
