@@ -124,6 +124,7 @@
         // We have a shell
         $CPU = $this->executeSshCommand("echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')]");
         // To get the CPU usage from the server
+        // https://askubuntu.com/questions/274349/getting-cpu-usage-realtime
         return($CPU);
       }
       else {
