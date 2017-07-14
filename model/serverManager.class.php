@@ -85,6 +85,34 @@
     }
 
     /**
+     * Gets the server RAM Usage
+     * ANd converts it to something we can read
+     * @param  [int] $serverID [The ID of the server]
+     * @return [int]           [With the result of the command or the error message when connection has faild]
+     */
+    public function getServerRamUsage($serverID) {
+      $this->getServerCredentials($serverID);
+      $sshConnectionResult = $this->sshConnect();
+      if ($sshConnectionResult) {
+        $ramUsagePercentage = $this->executeSshCommand('free');
+
+        $ramUsagePercentage = (string)trim($ramUsagePercentage);
+        $ramUsagePercentage_arr = explode("\n", $ramUsagePercentage);
+        // Gets each specefic things as a array
+        $mem = explode(" ", $ramUsagePercentage_arr[1]);
+        // Gets all things between a space
+        $mem = array_filter($mem);
+        // Gets all numbers
+        $mem = array_merge($mem);
+        $memory_usage = $mem[2]/$mem[1]*100;
+        return(round($memory_usage));
+      }
+      else {
+        return($sshConnectionResult);
+      }
+    }
+
+    /**
      * Execute a command to a ssh server
      * @param  [string] $command [The command we want to execute]
      * @return [string]          [The result from the command]
