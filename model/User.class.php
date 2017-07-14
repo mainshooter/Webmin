@@ -61,6 +61,33 @@ require_once 'Security.class.php';
    }
 
    /**
+    * Gets the mail from a user by the userID
+    * @param  [int] $userID [The ID of the user]
+    * @return [string]         [The mail adress from the user or a error message that nothing has been found]
+    */
+   public function getUserMail($userID) {
+     $Db = new db();
+     $S = new Security();
+
+     $sql = "SELECT `mail` FROM user WHERE iduser=:userID LIMIT 1";
+     $input = array(
+       "userID" => $S->checkInput($userID)
+     );
+     $result = $Db->readData($userID);
+
+     if (!empty($result)) {
+       foreach ($result as $key) {
+         return($key['mail']);
+         break;
+       }
+     }
+
+     else {
+       return("No result from DB");
+     }
+   }
+
+   /**
     * Logs a user out
     * @param [string] $redirectLocation [Were a client needs to go to after the logout]
     */
