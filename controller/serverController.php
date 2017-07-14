@@ -1,5 +1,5 @@
 <?php
-  require_once 'model/serverManager.class.php';
+  require_once 'model/ServerManager.class.php';
   require_once 'model/databaseHandler.class.php';
   require_once 'model/Security.class.php';
   require_once 'model/User.class.php';
@@ -29,6 +29,39 @@
      */
     public function index() {
       header('Refresh:0; ' . $GLOBALS['config']['base_url'] . 'dashboard/');
+    }
+
+    /**
+     * Gets the uptime from a server and present it to the view!
+     */
+    public function serverUptime($serverID = false) {
+      $this->User->setPageAcces(['admin']);
+      if ($this->User->checkIfUserHasAcces()) {
+        if ($serverID != false) {
+
+          $serverID = $serverID[0];
+          $userID = $this->User->getUserID($_SESSION['userMail']);
+
+          if ($this->ServerManager->checkIfServerIsFromUser($userID, $serverID)) {
+            echo $this->ServerManager->getServerUptime($serverID);
+          }
+
+          else {
+            // We don't have acces to that server
+          }
+
+        }
+
+        else {
+          // No server has been send
+        }
+      }
+
+      else {
+        // Not logged in
+      }
+
+
     }
 
     /**
