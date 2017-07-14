@@ -10,6 +10,9 @@
     private $serverUsername;
     private $serverPassword;
 
+    private $sshConnection;
+    private $sshConnected = false;
+
     /**
      * Gets all servers from the DB by a userID
      * @return [boolean or arr] [Resturns a boolean if we don't have a server or a assoc array when we have servers]
@@ -35,6 +38,8 @@
         return(false);
       }
     }
+
+
 
     /**
      * Adds a new server to the database
@@ -62,25 +67,104 @@
     }
 
     /**
-     * Gets the server credentials and puts them in the class properties
+     * Gets the uptime from a server
+     * @param  [INT] $serverID [The ID of the server]
+     * @return [string]           [The result of the executed command or the error message no connection]
      */
-    public function getServerCredentials($serverID) {
+    public function getServerUptime($serverID) {
+      $this->getServerCredentials($serverID);
+      $sshConnectionResult = $this->sshConnect();
+      if($sshConnectionResult) {
+        // Check if there is a connection
+        return($this->executeSshCommand('uptime'));
+      }
+      else {
+        // No connection or wrong auth
+        return($sshConnectionResult);
+      }
+    }
+
+    /**
+     * Execute a command to a ssh server
+     * @param  [string] $command [The command we want to execute]
+     * @return [string]          [The result from the command]
+     */
+    private function executeSshCommand($command) {
+      if ($this->sshConnected) {
+        // If we have a connection
+        $sshShell = ssh2_exec($this->sshConnection, $command);
+        // Execute the command
+        stream_set_blocking($sshShell, true);
+        $sshResult = ssh2_fetch_stream($sshShell, SSH2_STREAM_STDIO);
+        // Get the result from the server
+        return(stream_get_contents($sshResult));
+      }
+
+      else {
+        return("RUN ServerManager sshConnect! we have no connection");
+      }
+
+    }
+
+    /**
+     * Starts a ssh connection
+     * @return [string on fail or boolean on succes] [The result form the connection and auth]
+     */
+    private function sshConnect() {
+      $this->sshConnection = ssh2_connect($this->serverIP, $this->serverPort);
+      // Start the connection
+      if ($this->sshConnection != false) {
+        // We can connect to the server
+        $sshAuth = ssh2_auth_password($this->sshConnection, $this->serverUsername, $this->serverPassword);
+        // Start the auth
+
+        if ($sshAuth) {
+          // connection is a succes
+          $this->sshConnected = true;
+          return(true);
+        }
+
+        else {
+          // The auth has failt
+          return('Wrong server username or password');
+        }
+      }
+
+      else {
+        // The connection is failt
+        return('No connection with the server');
+      }
+    }
+
+    /**
+     * Gets the server credentials and puts them in the class properties
+     * @param [int] $serverID [The ID of the server]
+     */
+    private function getServerCredentials($serverID) {
       $Db = new db();
       $S = new Security();
 
       $sql = "SELECT * FROM server WHERE idserver=:serverID";
       $input = array(
-        "serverID" => $s->checkInput($serverID)
+        "serverID" => $S->checkInput($serverID)
       );
 
       $result = $Db->readData($sql, $input);
-      foreach ($result as $key) {
-        $this->serverIP = $key['serverIP'];
-        $this->serverPort = $key['serverPort'];
-        $this->serverUsername = $key['serverUsername'];
-        $this->serverPassword = $key['serverPassword'];
-        break;
+      if (!empty($result)) {
+        foreach ($result as $key) {
+          $this->serverIP = $key['serverIP'];
+          $this->serverPort = $key['serverPort'];
+          $this->serverUsername = $key['serverUsername'];
+          $this->serverPassword = $key['serverPassword'];
+          break;
+        }
       }
+
+      else {
+        // When there isn't a server
+        return(false);
+      }
+
     }
 
     /**
@@ -89,7 +173,7 @@
      * @return [string] [With the status the server]
      */
     public function getServerStatus($serverIP) {
-      $serverPing = exec("ping -n 1 $serverIP", $output, $status);
+      $serverPing = exec("ping $serverIP", $output, $status);
       // Ping result contains the text from the exec
       // status contains if the ping as been succeded
         if (0 == $status) {
@@ -99,6 +183,34 @@
         }
 
         return($status);
+    }
+
+    /**
+     * To check if a user is owner of that server
+     * @param  [int] $userID   [The ID of the user]
+     * @param  [int] $serverID [The ID of the server]
+     * @return [boolean]           [If a user has acces it returns true otherwise it returns false]
+     */
+    public function checkIfServerIsFromUser($userID, $serverID) {
+      $Db = new db();
+      $S = new Security();
+
+      $sql = "SELECT idserver FROM server WHERE userID=:userID AND idserver=:serverID";
+      $input = array(
+        "userID" => $S->checkInput($userID),
+        "serverID" => $S->checkInput($serverID)
+      );
+
+      $rows = $Db->countRows($sql, $input);
+
+      if ($rows == 1) {
+        // The user has acces to that server
+        return(true);
+      }
+      else {
+        // User hasn't acces to the server
+        return(false);
+      }
     }
 
   }
