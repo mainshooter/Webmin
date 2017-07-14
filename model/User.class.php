@@ -1,5 +1,5 @@
 <?php
-require_once 'Databasehandler.class.php';
+require_once 'databaseHandler.class.php';
 require_once 'Security.class.php';
 
  class User {
