@@ -113,6 +113,26 @@
     }
 
     /**
+     * Gets the server CPU usage and returns it
+     * @param  [int] $serverID [The ID of the server]
+     * @return [string]           [With a error message or with the cpu usage]
+     */
+    public function getServerCPUUsage($serverID) {
+      $this->getServerCredentials($serverID);
+      $sshConnectionResult = $this->sshConnect();
+      if ($sshConnectionResult) {
+        // We have a shell
+        $CPU = $this->executeSshCommand("echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')]");
+        // To get the CPU usage from the server
+        return($CPU);
+      }
+      else {
+        return($sshConnectionResult);
+      }
+
+    }
+
+    /**
      * Execute a command to a ssh server
      * @param  [string] $command [The command we want to execute]
      * @return [string]          [The result from the command]
