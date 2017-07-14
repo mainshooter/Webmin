@@ -14,7 +14,7 @@
   $config['db-ip'] = 'localhost';
   $config['db-port'] = 3306;
   $config['db-user'] = 'root';
-  $config['db-password'] = '';
+  $config['db-password'] = 'okmijn';
   $config['db-name'] = 'webmin';
   // DB config
 
