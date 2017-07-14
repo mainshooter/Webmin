@@ -28,7 +28,7 @@
      * @return [type] [description]
      */
     public function index() {
-      header('Refresh:0; ' . $GLOBALS['config']['base_url'] . 'dashboard/');
+      include 'view/not-loggedin.html';
     }
 
     /**
@@ -86,7 +86,7 @@
 
       else {
         // No acces a user isn't logged in
-        header('Refresh:0; ' . $GLOBALS['config']['base_url'] . '');
+        include 'view/not-loggedin.html';
       }
 
     }
@@ -104,7 +104,7 @@
 
       else {
         // Not logged in
-        header('Refresh:0; ' . $GLOBALS['config']['base_url'] . '');
+        include 'view/not-loggedin.html';
       }
 
     }

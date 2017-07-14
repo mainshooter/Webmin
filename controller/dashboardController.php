@@ -46,7 +46,7 @@
       }
 
       else {
-        // header('Refresh:0; ' . $GLOBALS['config']['base_url'] . '');
+        include 'view/not-loggedin.html';
       }
 
     }
