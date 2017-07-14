@@ -1,5 +1,5 @@
 <?php
-  require_once 'model/user.class.php';
+  require_once 'model/User.class.php';
   require_once 'model/Security.class.php';
   require_once 'model/ServerManager.class.php';
 

@@ -1,5 +1,5 @@
 <?php
-  require_once 'model/DatabaseHandler.class.php';
+  require_once 'model/databaseHandler.class.php';
 
   class displayController {
 
