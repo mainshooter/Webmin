@@ -72,6 +72,9 @@
      * @return [string]           [The result of the executed command or the error message no connection]
      */
     public function getServerUptime($serverID) {
+      $S = new Security();
+      $serverID = $S->checkInput($serverID);
+
       $this->getServerCredentials($serverID);
       $sshConnectionResult = $this->sshConnect();
       if($sshConnectionResult) {
@@ -91,6 +94,9 @@
      * @return [int]           [With the result of the command or the error message when connection has faild]
      */
     public function getServerRamUsage($serverID) {
+      $S = new Security();
+      $serverID = $S->checkInput($serverID);
+
       $this->getServerCredentials($serverID);
       $sshConnectionResult = $this->sshConnect();
       if ($sshConnectionResult) {
@@ -118,6 +124,8 @@
      * @return [string]           [With a error message or with the cpu usage]
      */
     public function getServerCPUUsage($serverID) {
+      $S = new Security();
+      $serverID = $S->checkInput($serverID);
       $this->getServerCredentials($serverID);
       $sshConnectionResult = $this->sshConnect();
       if ($sshConnectionResult) {
