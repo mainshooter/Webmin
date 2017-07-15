@@ -221,7 +221,9 @@
 
       else {
         // Not logged in
-        include 'view/not-loggedin.php';
+        include 'view/header.php';
+          include 'view/not-loggedin.php';
+        include 'view/footer.php';
       }
 
     }
