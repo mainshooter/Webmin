@@ -124,6 +124,35 @@
     }
 
     /**
+     * Gets the server port from a server
+     * @param  [INT] $serverID [The ID of the server]
+     * @return [string]           [The result from the DB with the port or a error message that we din;t found the server]
+     */
+    public function getServerPort($serverID) {
+      $S = new Security();
+      $Db = new db();
+
+      $sql = "SELECT serverPort FROM server WHERE idserver=:serverID LIMIT 1";
+      $input = array(
+        "serverID" => $S->checkInput($serverID)
+      );
+
+      $result = $Db->readData($sql, $input);
+      if (!empty($result)) {
+        // If we have a result
+        foreach ($result as $key) {
+          return($key['serverPort']);
+          break;
+        }
+      }
+
+      else {
+        // NO server found
+        return('No server found');
+      }
+    }
+
+    /**
      * Gets the IP from a server by the serverID
      * @param  [int] $serverID [The ID of the server]
      * @return [string]           [With the serverIP or a error message that there is no serverIP]
