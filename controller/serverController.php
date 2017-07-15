@@ -91,7 +91,15 @@
 
     }
 
+    public function updateServer() {
 
+    }
+
+
+    /**
+     * Gets the details from a server
+     * @param  boolean - int $serverID [If we don´t have a serverID we stop instance and if we have one it is a int]
+     */
     public function details($serverID = false) {
       $serverID = $serverID[0];
       $this->User->setPageAcces(['admin']);
@@ -101,17 +109,28 @@
           // http://www.tonylea.com/2012/how-to-get-memory-and-cpu-usage-in-php/
           $userID = $this->User->getUserID($_SESSION['userMail']);
           if ($this->ServerManager->checkIfServerIsFromUser($userID, $serverID)) {
+            $SSHCheckResult = $this->ServerManager->checkIfWeCanUseSSHLogin($serverID);
+            if ($SSHCheckResult) {
+              // When we can u login
+              $serverName = $this->ServerManager->getServerName($serverID);
+              $serverIP = $this->ServerManager->getServerIP($serverID);
 
-            $serverName = $this->ServerManager->getServerName($serverID);
-            $serverIP = $this->ServerManager->getServerIP($serverID);
+              $serverUptime = $this->ServerManager->getServerUptime($serverID);
+              $serverRAMUsage = $this->ServerManager->getServerRamUsage($serverID);
+              $serverCPU = $this->ServerManager->getServerCPUUsage($serverID);
 
-            $serverUptime = $this->ServerManager->getServerUptime($serverID);
-            $serverRAMUsage = $this->ServerManager->getServerRamUsage($serverID);
-            $serverCPU = $this->ServerManager->getServerCPUUsage($serverID);
+              include 'view/header.php';
+                include 'view/server/serverDetails.php';
+              include 'view/footer.php';
+            }
 
-            include 'view/header.php';
-              include 'view/server/serverDetails.php';
-            include 'view/footer.php';
+            else {
+              // Wen we can't login it will display a error
+              include 'view/header.php';
+                echo "<h2>" . $SSHCheckResult . "</h2>";
+              include 'view/footer.php';
+            }
+
           }
 
           else {
