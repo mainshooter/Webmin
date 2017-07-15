@@ -7,6 +7,7 @@ echo "<table>";
     echo "<th>Server IP</th>";
     echo "<th>Status</th>";
     echo "<th></th>";
+    echo "<th><th>";
   echo "</tr>";
   foreach ($servers as $key) {
     echo "
@@ -15,6 +16,7 @@ echo "<table>";
         <td>" . $key['serverIP'] . "</td>
         <td>" . $serverStatus[$teller] . "</td>
         <td><a href='" . $GLOBALS['config']['base_url'] . "server/details/" . $key['idserver'] . "'>Server details</a></td>
+        <td><a href='" . $GLOBALS['config']['base_url'] . "server/updateServer/" . $key['idserver'] . "'>Update server credentials</a></td>
       </tr>
     ";
     $teller++;
