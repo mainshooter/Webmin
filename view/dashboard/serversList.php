@@ -7,7 +7,7 @@ echo "<table>";
     echo "<th>Server IP</th>";
     echo "<th>Status</th>";
     echo "<th></th>";
-    echo "<th><th>";
+    echo "<th></th>";
   echo "</tr>";
   foreach ($servers as $key) {
     echo "
