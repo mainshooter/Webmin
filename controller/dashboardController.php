@@ -27,27 +27,31 @@
         $userID = $this->User->getUserID($_SESSION['userMail']);
         $servers = $this->ServerManager->getServers($userID);
 
-        include 'view/header.php';
         if ($servers != false) {
           // If we have a server
           $serverStatus;
           foreach ($servers as $key) {
             $serverStatus[] = $this->ServerManager->getServerStatus($key['serverIP']);
           }
-            include 'view/dashboard/serversList.php';
+            include 'view/header.php';
+              include 'view/dashboard/serversList.php';
+            include 'view/footer.php';
 
         }
 
         else {
           // When we don't have any servers
-          include 'view/dashboard/no-servers.html';
+          include 'view/header.php';
+            include 'view/dashboard/no-servers.html';
+          include 'view/footer.php';
         }
 
-        include 'view/footer.php';
       }
 
       else {
-        include 'view/not-loggedin.php';
+        include 'view/header.php';
+          include 'view/not-loggedin.php';
+        include 'view/footer.php';
       }
 
     }
