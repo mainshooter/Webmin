@@ -95,6 +95,35 @@
     }
 
     /**
+     * Gets the userName from a server
+     * @param  [int] $serverID [The ID of the server]
+     * @return [string]           [With the result from the db or the error message]
+     */
+    public function getServerUsername($serverID) {
+      $S = new Security();
+      $Db = new db();
+
+      $sql = "SELECT serverUsername FROM server WHERE idserver=:serverID LIMIT 1";
+      $input = array(
+        "serverID" => $S->checkInput($serverID)
+      );
+      $result = $Db->readData($sql, $input);
+
+      if (!empty($result)) {
+        foreach ($result as $key) {
+          return($key['serverUsername']);
+          break;
+        }
+      }
+
+      else {
+        // No server
+        return('No server found');
+      }
+
+    }
+
+    /**
      * Gets the IP from a server by the serverID
      * @param  [int] $serverID [The ID of the server]
      * @return [string]           [With the serverIP or a error message that there is no serverIP]
