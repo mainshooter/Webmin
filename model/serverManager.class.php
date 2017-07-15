@@ -78,7 +78,7 @@
 
       $sql = "SELECT serverName FROM server WHERE idserver=:serverID LIMIT 1";
       $input = array(
-        "serverID" => $S->checkInput($serverID);
+        "serverID" => $S->checkInput($serverID)
       );
       $result = $Db->readData($sql, $input);
       if (!empty($result)) {
