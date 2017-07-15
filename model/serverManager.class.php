@@ -95,6 +95,34 @@
     }
 
     /**
+     * Gets the IP from a server by the serverID
+     * @param  [int] $serverID [The ID of the server]
+     * @return [string]           [With the serverIP or a error message that there is no serverIP]
+     */
+    public function getServerIP($serverID) {
+      $S = new Security();
+      $Db = new db();
+
+      $sql = "SELECT serverIP FROM server WHERE idserver=:serverID LIMIT 1";
+      $input = array(
+        "serverID" => $S->checkInput($serverID)
+      );
+      $result = $Db->readData($sql, $input);
+
+      if (!empty($result)) {
+        // If we have a serverIP
+        foreach ($result as $key) {
+          return($key['serverIP']);
+        }
+      }
+
+      else {
+          // No result
+          return('No serverIP found');
+      }
+    }
+
+    /**
      * Gets the uptime from a server
      * @param  [INT] $serverID [The ID of the server]
      * @return [string]           [The result of the executed command or the error message no connection]
