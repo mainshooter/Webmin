@@ -44,7 +44,7 @@
         <li><a href="<?php echo $GLOBALS['config']['base_url'] ?>logout/">Logout</a></li>
         <li><a href="<?php echo $GLOBALS['config']['base_url'] ?>dashboard/">Dashboard</a></li>
         <li><a href="<?php echo $GLOBALS['config']['base_url'] ?>serverToevoegen/">Server toevoegen</a></li>
-        <li><a href="<?php echo $GLOBALS['config']['base_url'] ?>">The Food</a></li>
+        <li><a href="<?php echo $GLOBALS['config']['base_url'] ?>serverAanpassen/">Server aanpassen</a></li>
       </ul>
     </div>
     <div class="row">
