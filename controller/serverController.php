@@ -95,10 +95,32 @@
 
     }
 
+    /**
+     * Creates a view to update a server
+     */
+    public function update($serverID) {
+      $serverID = $serverID[0];
+      $this->User->setPageAcces(['admin']);
+      if ($this->User->checkIfUserHasAcces()) {
+        $userID = $this->User->getUserID($_SESSION['userMail']);
+
+        if ($this->ServerManager->checkIfServerIsFromUser($userID, $serverID)) {
+          $serverName = $this->ServerManager->getServerName($serverID);
+          $serverIP = $this->ServerManager->getServerIP($serverID);
+          $serverPort = $this->ServerManager->getServerPort($serverID);
+          $serverUsername = $this->ServerManager->getServerUsername($serverID);
+
+          include 'view/header.php';
+            include 'view/server/updateServerCredentials.php';
+          include 'view/footer.php';
+        }
+      }
+    }
+
 
     /**
      * Gets the details from a server
-     * @param  boolean - int $serverID [If we don´t have a serverID we stop instance and if we have one it is a int]
+     * @param  boolean - arr $serverID [If we don´t have a serverID we stop instance and if we have one it is a int]
      */
     public function details($serverID = false) {
       $serverID = $serverID[0];
