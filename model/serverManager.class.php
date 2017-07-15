@@ -11,7 +11,7 @@
     private $serverPassword;
 
     private $sshConnection;
-    private $sshConnected = false;
+    public $sshConnected = false;
 
     /**
      * Gets all servers from the DB by a userID
@@ -131,16 +131,8 @@
       $S = new Security();
       $serverID = $S->checkInput($serverID);
 
-      $this->getServerCredentials($serverID);
-      $sshConnectionResult = $this->sshConnect();
-      if($sshConnectionResult) {
         // Check if there is a connection
         return($this->executeSshCommand('uptime -p'));
-      }
-      else {
-        // No connection or wrong auth
-        return($sshConnectionResult);
-      }
     }
 
     /**
@@ -153,9 +145,6 @@
       $S = new Security();
       $serverID = $S->checkInput($serverID);
 
-      $this->getServerCredentials($serverID);
-      $sshConnectionResult = $this->sshConnect();
-      if ($sshConnectionResult) {
         $ramUsagePercentage = $this->executeSshCommand('free');
 
         $ramUsagePercentage = (string)trim($ramUsagePercentage);
@@ -168,10 +157,6 @@
         $mem = array_merge($mem);
         $memory_usage = $mem[2]/$mem[1]*100;
         return(round($memory_usage));
-      }
-      else {
-        return($sshConnectionResult);
-      }
     }
 
     /**
@@ -182,18 +167,12 @@
     public function getServerCPUUsage($serverID) {
       $S = new Security();
       $serverID = $S->checkInput($serverID);
-      $this->getServerCredentials($serverID);
-      $sshConnectionResult = $this->sshConnect();
-      if ($sshConnectionResult) {
+
         // We have a shell
         $CPU = $this->executeSshCommand("echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')]");
         // To get the CPU usage from the server
         // https://askubuntu.com/questions/274349/getting-cpu-usage-realtime
         return($CPU);
-      }
-      else {
-        return($sshConnectionResult);
-      }
 
     }
 
@@ -219,6 +198,12 @@
 
     }
 
+    public function checkIfWeCanUseSSHLogin($serverID) {
+      $this->getServerCredentials($serverID);
+      $this->sshConnect();
+      return($this->sshConnected);
+    }
+
     /**
      * Starts a ssh connection
      * @return [string on fail or boolean on succes] [The result form the connection and auth]
@@ -228,18 +213,16 @@
       // Start the connection
       if ($this->sshConnection != false) {
         // We can connect to the server
-        $sshAuth = ssh2_auth_password($this->sshConnection, $this->serverUsername, $this->serverPassword);
-        // Start the auth
-
-        if ($sshAuth) {
+        if (ssh2_auth_password($this->sshConnection, $this->serverUsername, $this->serverPassword)) {
           // connection is a succes
           $this->sshConnected = true;
           return(true);
         }
+        // Start the auth
 
         else {
           // The auth has failt
-          return('Wrong server username or password');
+          die('Wrong server username or password');
         }
       }
 
