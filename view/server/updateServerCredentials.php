@@ -1,6 +1,6 @@
 <form class="col-6" method="post" action="<?php echo $GLOBALS['config']['base_url'] ?>server/updateServer/">
 
-  <label>Server name<label>
+  <label>Server name</label>
   <input type="text" name="serverName" value="<?php echo $serverName ?>">
 
   <label>Server IP</label>

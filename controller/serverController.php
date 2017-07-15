@@ -102,6 +102,7 @@
       $serverID = $serverID[0];
       $this->User->setPageAcces(['admin']);
       if ($this->User->checkIfUserHasAcces()) {
+
         $userID = $this->User->getUserID($_SESSION['userMail']);
 
         if ($this->ServerManager->checkIfServerIsFromUser($userID, $serverID)) {
