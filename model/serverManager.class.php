@@ -17,14 +17,14 @@
      * Gets all servers from the DB by a userID
      * @return [boolean or arr] [Resturns a boolean if we don't have a server or a assoc array when we have servers]
      */
-    public function getServers() {
+    public function getServers($userID) {
       $Db = new Db();
-      $User = new User();
+      $S = new Security();
 
-      $userID = $User->getUserID($_SESSION['userMail']);
-
-      $sql = "SELECT idserver, serverName, serverIP FROM server";
-      $input = array();
+      $sql = "SELECT idserver, serverName, serverIP FROM server WHERE userID=:userID";
+      $input = array(
+        "userID" => $S->checkInput($userID)
+      );
 
       $Rows = $Db->countRows($sql, $input);
       if ($Rows >= 1) {

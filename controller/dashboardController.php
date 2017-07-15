@@ -24,7 +24,8 @@
     public function getServers() {
       $this->User->setPageAcces(['admin']);
       if ($this->User->checkIfUserHasAcces()) {
-        $servers = $this->ServerManager->getServers();
+        $userID = $User->getUserID($_SESSION['userMail']);
+        $servers = $this->ServerManager->getServers($userID);
 
         include 'view/header.php';
         if ($servers != false) {
