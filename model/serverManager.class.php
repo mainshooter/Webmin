@@ -66,6 +66,34 @@
       $Db->CreateData($sql, $input);
     }
 
+
+    /**
+     * Gets the name from the server by the serverID
+     * @param  [int] $serverID [The ID from the server]
+     * @return [string]           [The error message or the serverName from the DB]
+     */
+    public function getServerName($serverID) {
+      $S = new Security();
+      $Db = new db();
+
+      $sql = "SELECT serverName FROM server WHERE idserver=:serverID LIMIT 1";
+      $input = array(
+        "serverID" => $S->checkInput($serverID);
+      );
+      $result = $Db->readData($sql, $input);
+      if (!empty($result)) {
+        // We have a serverName
+        foreach ($result as $key) {
+          return($key['serverName']);
+          break;
+        }
+      }
+
+      else {
+        return('No server found');
+      }
+    }
+
     /**
      * Gets the uptime from a server
      * @param  [INT] $serverID [The ID of the server]
