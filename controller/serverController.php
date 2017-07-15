@@ -91,6 +91,46 @@
 
     }
 
+
+    public function details($serverID = false) {
+      $serverID = $serverID[0];
+      $this->User->setPageAcces(['admin']);
+      if ($this->User->checkIfUserHasAcces()) {
+        if ($serverID != false) {
+          // If we have a server details
+          // http://www.tonylea.com/2012/how-to-get-memory-and-cpu-usage-in-php/
+          $userID = $this->User->getUserID($_SESSION['userMail']);
+          if ($this->ServerManager->checkIfServerIsFromUser($userID, $serverID)) {
+
+            $serverName = $this->ServerManager->getServerName($serverID);
+            $serverIP = $this->ServerManager->getServerIP($serverID);
+
+            $serverUptime = $this->ServerManager->getServerUptime($serverID);
+            $serverRAMUsage = $this->ServerManager->getServerRamUsage($serverID);
+            $serverCPU = $this->ServerManager->getServerCPUUsage($serverID);
+
+            include 'view/header.php';
+              include 'view/server/serverDetails.php';
+            include 'view/footer.php';
+          }
+
+          else {
+            // This server isn't from that user
+          }
+
+        }
+
+        else {
+          // No serverID
+        }
+      }
+
+      else {
+        // Not logged in
+      }
+
+    }
+
     /**
      * Create the view to add a server
      */
