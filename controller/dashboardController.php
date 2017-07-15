@@ -47,7 +47,7 @@
       }
 
       else {
-        include 'view/not-loggedin.html';
+        include 'view/not-loggedin.php';
       }
 
     }

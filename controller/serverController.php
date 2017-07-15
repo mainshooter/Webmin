@@ -28,7 +28,9 @@
      * @return [type] [description]
      */
     public function index() {
-      include 'view/not-loggedin.php';
+      include 'view/header.php';
+        include 'view/not-loggedin.php';
+      include 'view/footer.php';
     }
 
     /**
@@ -48,17 +50,26 @@
 
           else {
             // We don't have acces to that server
+            include 'view/header.php';
+              echo "<h2 class='col-6'>You don't have acces to that server!</h2>";
+            include 'view/footer.php';
           }
 
         }
 
         else {
           // No server has been send
+          include 'view/header.php';
+            echo "<h2 class='col-6'>No server seelcted!</h2>";
+          include 'view/footer.php';
         }
       }
 
       else {
         // Not logged in
+        include 'view/header.php';
+          include 'view/not-loggedin.php';
+        include 'view/footer.php';
       }
 
 
@@ -86,7 +97,9 @@
 
       else {
         // No acces a user isn't logged in
-        include 'view/not-loggedin.php';
+        include 'view/header.php';
+          include 'view/not-loggedin.php';
+        include 'view/footer.php';
       }
 
     }
@@ -115,6 +128,20 @@
             include 'view/server/updateServerCredentials.php';
           include 'view/footer.php';
         }
+
+        else {
+          // Not the server from the client
+          include 'view/header.php';
+            echo "<h2 class='col-6'>You don't have acces to that server!</h2>";
+          include 'view/footer.php';
+        }
+      }
+
+      else {
+        // Not logged in
+        include 'view/header.php';
+          include 'view/not-loggedin.php';
+        include 'view/footer.php';
       }
     }
 
@@ -157,18 +184,26 @@
           }
 
           else {
-            // This server isn't from that user
+            include 'view/header.php';
+              echo "<h2 class='col-6'>You don't have acces to that server!</h2>";
+            include 'view/footer.php';
           }
 
         }
 
         else {
           // No serverID
+          include 'view/header.php';
+            echo "<h2 class='col-6'>No serverID selected!</h2>";
+          include 'view/footer.php';
         }
       }
 
       else {
         // Not logged in
+        include 'view/header.php';
+          include 'view/not-loggedin.php';
+        include 'view/footer.php';
       }
 
     }
