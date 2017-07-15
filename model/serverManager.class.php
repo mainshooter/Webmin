@@ -79,7 +79,7 @@
       $sshConnectionResult = $this->sshConnect();
       if($sshConnectionResult) {
         // Check if there is a connection
-        return($this->executeSshCommand('uptime'));
+        return($this->executeSshCommand('uptime -p'));
       }
       else {
         // No connection or wrong auth
