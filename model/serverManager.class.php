@@ -280,6 +280,7 @@
 
         else {
           // The auth has failt
+          $this->sshConnected = false;
           die('Wrong server username or password');
         }
       }
