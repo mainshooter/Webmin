@@ -104,8 +104,41 @@
 
     }
 
-    public function updateServer() {
+    /**
+     * Update controller that sends the update to the ServerManager
+     * @param  [arr] $serverID [The ID from the server]
+     */
+    public function updateServer($serverID) {
+      $serverID = $serverID[0];
+      $this->User->setPageAcces(['admin']);
+      if ($this->User->checkIfUserHasAcces()) {
+        if (ISSET($_POST['serverToevoegen']) && ISSET($_POST['serverName']) && ISSET($_POST['serverIP']) && ISSET($_POST['serverPort']) && ISSET($_POST['serverUsername']) && ISSET($_POST['serverPassword'])) {
+          $userID = $this->User->getUserID($_SESSION['userMail']);
 
+          if ($this->ServerManager->checkIfServerIsFromUser($userID, $serverID)) {
+            $this->ServerManager->updateServer($_POST, $serverID);
+          }
+
+          else {
+            // Not our server
+            include 'view/header.php';
+              echo "<h2 class='col-6'>You don't have acces to that server!</h2>";
+            include 'view/footer.php';
+          }
+        }
+
+        else {
+          // A user came here by exident
+          $this->update($serverID);
+        }
+      }
+
+      else {
+        // Not logged in
+        include 'view/header.php';
+          include 'view/not-loggedin.php';
+        include 'view/footer.php';
+      }
     }
 
     /**
