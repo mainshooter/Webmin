@@ -219,8 +219,15 @@
       $S = new Security();
       $serverID = $S->checkInput($serverID);
 
+      if ($this->sshLogin($serverID)) {
         // Check if there is a connection
         return($this->executeSshCommand('uptime -p'));
+      }
+      else {
+        return('No connection to the server');
+      }
+
+
     }
 
     /**
@@ -233,6 +240,7 @@
       $S = new Security();
       $serverID = $S->checkInput($serverID);
 
+      if ($this->sshLogin($serverID)) {
         $ramUsagePercentage = $this->executeSshCommand('free');
 
         $ramUsagePercentage = (string)trim($ramUsagePercentage);
@@ -245,6 +253,12 @@
         $mem = array_merge($mem);
         $memory_usage = $mem[2]/$mem[1]*100;
         return(round($memory_usage));
+      }
+      else {
+        return('No acces');
+      }
+
+
     }
 
     /**
@@ -256,11 +270,19 @@
       $S = new Security();
       $serverID = $S->checkInput($serverID);
 
-        // We have a shell
-        $CPU = $this->executeSshCommand("echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')]");
-        // To get the CPU usage from the server
-        // https://askubuntu.com/questions/274349/getting-cpu-usage-realtime
-        return($CPU);
+        if ($this->sshLogin()) {
+          // We have a shell
+          $CPU = $this->executeSshCommand("echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')]");
+          // To get the CPU usage from the server
+          // https://askubuntu.com/questions/274349/getting-cpu-usage-realtime
+          return($CPU);
+        }
+
+        else {
+          return('No connection to the server');
+        }
+
+
 
     }
 

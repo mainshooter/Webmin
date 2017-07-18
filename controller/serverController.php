@@ -10,6 +10,7 @@
     private $Db;
     private $S;
     private $User;
+    private $SshConnection;
 
 
     /**
@@ -20,6 +21,7 @@
       $this->Db = new db();
       $this->S = new Security();
       $this->User = new User();
+      $this->Sshconnection = new SshConnection();
     }
 
     /**

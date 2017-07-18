@@ -22,10 +22,17 @@
      * @param  [int] $serverID [description]
      * @return [boolean]           [Returns if the connection is a succes]
      */
-    public function checkIfWeCanUseSSHLogin($serverID) {
-      $this->getServerCredentials($serverID);
-      $this->sshConnect();
-      return($this->sshConnectionActive);
+    public function sshLogin($serverID) {
+      $loginCredentialsResult = $this->getServerCredentials($serverID);
+      if ($loginCredentialsResult) {
+        $this->sshConnect();
+        return($this->sshConnectionActive);
+      }
+
+      else {
+        return(false);
+      }
+
     }
 
     /**
