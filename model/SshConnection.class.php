@@ -1,4 +1,7 @@
 <?php
+  require_once 'model/databaseHandler.class.php';
+  require_once 'model/Security.class.php';
+  require_once 'model/User.class.php';
 
   class SshConnection {
 
@@ -10,7 +13,7 @@
     protected $sshShell;
     // The active ssh connection lives here
 
-    protected $sshConnectionActive;
+    protected $sshConnectionActive = false;
     // If the connection is active
 
 

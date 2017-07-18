@@ -2,16 +2,9 @@
   require_once 'model/databaseHandler.class.php';
   require_once 'model/User.class.php';
   require_once 'model/Security.class.php';
+  require_once 'model/Sshconnection.class.php';
 
-  class ServerManager {
-
-    private $serverIP;
-    private $serverPort;
-    private $serverUsername;
-    private $serverPassword;
-
-    private $sshConnection;
-    public $sshConnected = false;
+  class ServerManager extends SshConnection {
 
     /**
      * Gets all servers from the DB by a userID
@@ -64,6 +57,43 @@
       );
 
       $Db->CreateData($sql, $input);
+    }
+
+    /**
+     * Method to update the server credentials
+     * @param  [arr] $updateServer [The result from the form]
+     * @param  [int] $serverID     [The serverID]
+     */
+    public function updateServer($updateServer, $serverID) {
+      $Db = new db();
+      $S = new Security();
+
+      if (ISSET($updateServer['serverPassword']) && empty($updateServer['serverPassword'])) {
+        // If we have a password update
+        $sql = "UPDATE `server` SET serverName`=:serverName,`serverIP`=:serverIP,`serverPort`=:serverPort,`serverUsername`=:serverUsername,`serverPassword`=:serverPassword, WHERE idserver=:serverID";
+        $input = array(
+          "serverName" => $S->checkInput($updateServer['serverName']),
+          "serverIP" => $S->checkInput($updateServer['serverIP']),
+          "serverPort" => $S->checkInput($updateServer['serverPort']),
+          "serverUsername" => $S->checkInput($updateServer['serverUsername']),
+          "serverPassword" => $S->checkInput($updateServer['serverPassword']),
+          "serverID" => $S->checkInput($serverID)
+        );
+      }
+
+      else {
+        // No new password
+        $sql = "UPDATE `server` SET serverName`=:serverName,`serverIP`=:serverIP,`serverPort`=:serverPort,`serverUsername`=:serverUsername WHERE idserver=:serverID";
+        $input = array(
+          "serverName" => $S->checkInput($updateServer['serverName']),
+          "serverIP" => $S->checkInput($updateServer['serverIP']),
+          "serverPort" => $S->checkInput($updateServer['serverPort']),
+          "serverUsername" => $S->checkInput($updateServer['serverUsername']),
+          "serverID" => $S->checkInput($serverID)
+        );
+      }
+
+      $result = $Db->updateData($sql, $input);
     }
 
 
@@ -240,9 +270,9 @@
      * @return [string]          [The result from the command]
      */
     private function executeSshCommand($command) {
-      if ($this->sshConnected) {
+      if ($this->sshConnectionActive) {
         // If we have a connection
-        $sshShell = ssh2_exec($this->sshConnection, $command);
+        $sshShell = ssh2_exec($this->sshShell, $command);
         // Execute the command
         stream_set_blocking($sshShell, true);
         $sshResult = ssh2_fetch_stream($sshShell, SSH2_STREAM_STDIO);
@@ -256,71 +286,6 @@
 
     }
 
-    public function checkIfWeCanUseSSHLogin($serverID) {
-      $this->getServerCredentials($serverID);
-      $this->sshConnect();
-      return($this->sshConnected);
-    }
-
-    /**
-     * Starts a ssh connection
-     * @return [string on fail or boolean on succes] [The result form the connection and auth]
-     */
-    private function sshConnect() {
-      $this->sshConnection = ssh2_connect($this->serverIP, $this->serverPort);
-      // Start the connection
-      if ($this->sshConnection != false) {
-        // We can connect to the server
-        if (ssh2_auth_password($this->sshConnection, $this->serverUsername, $this->serverPassword)) {
-          // connection is a succes
-          $this->sshConnected = true;
-          return(true);
-        }
-        // Start the auth
-
-        else {
-          // The auth has failt
-          $this->sshConnected = false;
-          die('Wrong server username or password');
-        }
-      }
-
-      else {
-        // The connection is failt
-        return('No connection with the server');
-      }
-    }
-
-    /**
-     * Gets the server credentials and puts them in the class properties
-     * @param [int] $serverID [The ID of the server]
-     */
-    private function getServerCredentials($serverID) {
-      $Db = new db();
-      $S = new Security();
-
-      $sql = "SELECT * FROM server WHERE idserver=:serverID";
-      $input = array(
-        "serverID" => $S->checkInput($serverID)
-      );
-
-      $result = $Db->readData($sql, $input);
-      if (!empty($result)) {
-        foreach ($result as $key) {
-          $this->serverIP = $key['serverIP'];
-          $this->serverPort = $key['serverPort'];
-          $this->serverUsername = $key['serverUsername'];
-          $this->serverPassword = $key['serverPassword'];
-          break;
-        }
-      }
-
-      else {
-        // When there isn't a server
-        return(false);
-      }
-
-    }
 
     /**
      * Gets the online or offline server status
