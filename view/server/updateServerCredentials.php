@@ -1,4 +1,4 @@
-<form class="col-6" method="post" action="<?php echo $GLOBALS['config']['base_url'] ?>server/updateServer/">
+<form class="col-6" method="post" action="<?php echo $GLOBALS['config']['base_url']; ?>server/updateServer/<?php echo $serverID; ?>">
 
   <label>Server name</label>
   <input type="text" name="serverName" value="<?php echo $serverName ?>">
@@ -15,8 +15,6 @@
   <label>Server password</label>
   <input type="password" name="serverPassword">
 
-  <label>Server password confirmation</label>
-  <input type="password" name="serverPasswordConfirm">
   <br>
   <input type="submit" name="serverUpdate">
 </form>
