@@ -14,10 +14,15 @@
     // If the connection is active
 
 
+    /**
+     * Checks if the SSH connection will work
+     * @param  [int] $serverID [description]
+     * @return [boolean]           [Returns if the connection is a succes]
+     */
     public function checkIfWeCanUseSSHLogin($serverID) {
       $this->getServerCredentials($serverID);
       $this->sshConnect();
-      return($this->sshConnected);
+      return($this->sshConnectionActive);
     }
 
     /**
@@ -45,7 +50,7 @@
 
       else {
         // The connection is failt
-        return('No connection with the server');
+        die('No connection with the server');
       }
     }
 
