@@ -194,7 +194,7 @@
           // http://www.tonylea.com/2012/how-to-get-memory-and-cpu-usage-in-php/
           $userID = $this->User->getUserID($_SESSION['userMail']);
           if ($this->ServerManager->checkIfServerIsFromUser($userID, $serverID)) {
-            $SSHCheckResult = $this->ServerManager->checkIfWeCanUseSSHLogin($serverID);
+            $SSHCheckResult = $this->ServerManager->sshLogin($serverID);
             if ($SSHCheckResult) {
               // When we can u login
               $serverName = $this->ServerManager->getServerName($serverID);

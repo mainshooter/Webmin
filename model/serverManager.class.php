@@ -2,7 +2,7 @@
   require_once 'model/databaseHandler.class.php';
   require_once 'model/User.class.php';
   require_once 'model/Security.class.php';
-  require_once 'model/Sshconnection.class.php';
+  require_once 'model/SshConnection.class.php';
 
   class ServerManager extends SshConnection {
 
@@ -270,7 +270,7 @@
       $S = new Security();
       $serverID = $S->checkInput($serverID);
 
-        if ($this->sshLogin()) {
+        if ($this->sshLogin($serverID)) {
           // We have a shell
           $CPU = $this->executeSshCommand("echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')]");
           // To get the CPU usage from the server
