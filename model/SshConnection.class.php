@@ -26,7 +26,7 @@
       $loginCredentialsResult = $this->getServerCredentials($serverID);
       if ($loginCredentialsResult) {
         $this->sshConnect();
-        return($this->sshConnectionActive);
+        return(true);
       }
 
       else {
@@ -87,6 +87,7 @@
           $this->serverPassword = $key['serverPassword'];
           break;
         }
+        return(true);
       }
 
       else {
